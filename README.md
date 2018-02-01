@@ -15,6 +15,7 @@ scrapy crawl easynvest -a ac_number=xxxxxx -a password=xxxxxxx
 
 #### Onde
 **ac_number** é o número da sua conta de acesso
+
 **password**  é sua senha (não o token de transação, nunca use esse token em aplicações de terceiros 
 
 *Em breve mais informações*
