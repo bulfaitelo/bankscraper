@@ -18,7 +18,20 @@ class EasynvestSpider(scrapy.Spider):
 
     def after_login(self, response):
         # check login succeed before going on
-        self.log(response.xpath('//title/text()').extract_first())
+        # self.log(response.xpath('//title/text()').extract_first())
+        yield scrapy.Request(
+            url = 'https://portal.easynvest.com.br/financas/custodia/',
+            callback=self.parse_custodia
+        )
+    def parse_custodia(self, response):
+        seguimentos = response.xpath(
+            '//div[contains(@class, "box-custodia")]'
+        )
+        self.log(seguimentos)
+        for custodias in seguimentos:
+            custodia = custodias.xpath('./a[contains(@class, "link-acoes")]/text()').extract_first()            
+            self.log(custodia)
+        
 
     # def parse(self, response):     
         # formdata = {
