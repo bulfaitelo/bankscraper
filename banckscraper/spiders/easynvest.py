@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import scrapy_splash
+
 
 class EasynvestSpider(scrapy.Spider):
     name = 'easynvest'
@@ -10,7 +12,7 @@ class EasynvestSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        return scrapy.FormRequest.from_response(
+        return scrapy_splash.SplashFormRequest.from_response(
             response,
             formdata={'Conta': self.ac_number, 'AssinaturaEletronica': self.password},
             callback=self.after_login
@@ -19,8 +21,8 @@ class EasynvestSpider(scrapy.Spider):
     def after_login(self, response):
         # check login succeed before going on
         # self.log(response.xpath('//title/text()').extract_first())
-        yield scrapy.Request(
-            url = 'https://portal.easynvest.com.br/financas/custodia/',
+        yield scrapy_splash.SplashRequest(
+            splash_url='https://portal.easynvest.com.br/financas/custodia/',
             callback=self.parse_custodia
         )
     def parse_custodia(self, response):
@@ -28,9 +30,43 @@ class EasynvestSpider(scrapy.Spider):
             '//div[contains(@class, "box-custodia")]'
         )
         self.log(seguimentos)
-        for custodias in seguimentos:
-            custodia = custodias.xpath('./a[contains(@class, "link-acoes")]/text()').extract_first()            
-            self.log(custodia)
+
+
+
+
+
+        # for custodias in seguimentos:
+        #     custodia = custodias.xpath('./a[contains(@class, "link-acoes")]')
+        #     custodia_name = custodia.xpath("text()").extract_first()
+        #     custodia_value = custodia.xpath("./span/text()").extract_first()
+            
+        #     self.log("Nome: %s - Valor: %s" % (custodia_name, custodia_value))
+            
+        #     # tabelas = custodias.xpath('//div/')
+        #     # /html/body/div[3]/div[3]/section/div/div[5]/div/table/tbody
+        #     # /html/body/div[3]/div[3]/section/div/div[4]/div/table/tbody/tr[1]/td[8]
+        #     ativos = custodias.xpath("./div/table/tbody/tr")
+        #     if ativos:                                
+        #         for ativo in ativos:
+        #             # self.log("==> "+ativo.xpath('./td/a/text()').extract_first()+" Valor: "+ativo.xpath('./td[8]/a/text()').extract_first())
+        #             # /html/body/div[3]/div[3]/section/div/div[4]/div/table/tbody/tr[2]/td[8]
+        #             self.log("==> %s  Valor: %s" %(ativo.xpath('./td/a/text()').extract_first(), ativo.xpath('./td[8]/text()').extract_first()))
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            # if :
+            #     itens = custodia.xpath('//table[contains(@class, "table-easy")]/tbody/tr/td')
+            #     for investimentos in itens:
+            #         self.log(investimentos)
         
 
     # def parse(self, response):     
