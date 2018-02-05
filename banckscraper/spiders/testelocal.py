@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-from scrapy_splash import SplashRequest
 
 class TestelocalSpider(scrapy.Spider):
     name = 'testelocal'
     # allowed_domains = ['127.0.0.1/custodia']
-    start_urls = ['http://127.0.0.1/custodia']
+    start_urls = ['http://127.0.0.1/custodia/custodia.htm']
 
     def parse(self, response):
-
+        # Ativos
         ativos_tesouro =  response.xpath(
             '//tbody/tr'
         )
@@ -24,8 +23,32 @@ class TestelocalSpider(scrapy.Spider):
             Valor = ativo.xpath('./td[8]/text()').extract_first()
 
             print(" %s, %s, %s, %s, %s, %s, %s, %s, "% (nome_ativo, nome_emissor, quantidade, investimento, vencimento, taxa_negociada, ir_iof_taxa, Valor))
+        
+        return scrapy.FormRequest(
+            url='http://localhost/custodia/extrato.php', 
+            formdata={'test': 'hue br 123'},
+            callback=self.after_post
+        )
 
+        
 
+    def after_post(self, response):
+        # Extrato
+        extrato =  response.xpath(
+            '//tbody/tr'
+        )
+        print("After login Titulo: %s" % response.xpath('//title/text()').extract_first())
+        for extrato_detalhado in extrato:
+            liquidacao = extrato_detalhado.xpath('./td[1]/text()').extract_first()
+            movimentacao = extrato_detalhado.xpath('./td[2]/text()').extract_first()
+            historico = extrato_detalhado.xpath('./td[3]/text()').extract_first()
+            lancamento = extrato_detalhado.xpath('./td[4]/text()').extract_first()
+            saldo = extrato_detalhado.xpath('./td[5]/text()').extract_first()
+            print("%s, %s, %s, %s, %s, " % (liquidacao, movimentacao, historico, lancamento, saldo))
+        
+
+    
+        
         
 
 

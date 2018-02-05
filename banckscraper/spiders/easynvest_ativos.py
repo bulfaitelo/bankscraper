@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import scrapy
 
-class EasynvestSpider(scrapy.Spider):
-    name = 'easynvest'
+class EasynvestAtivosSpider(scrapy.Spider):
+    name = 'easynvest_ativos'
     # allowed_domains = ['www.easynvest.com.br', 'portal.easynvest.com.br']
     start_urls = [
         'https://portal.easynvest.com.br/autenticacao/login'
@@ -16,6 +16,7 @@ class EasynvestSpider(scrapy.Spider):
             callback=self.after_login
         )
 
+    # Redirecionando para XHR dos rendimentos do tesouro direto. 
     def after_login(self, response):
         # check login succeed before going on
         print("After login Titulo: %s" % response.xpath('//title/text()').extract_first())
@@ -23,6 +24,7 @@ class EasynvestSpider(scrapy.Spider):
             url='https://portal.easynvest.com.br/financascustodia/rendafixa/',
             callback=self.parse_tesouro_direto,            
         )
+    # Retornando TEsouro Direto
     def parse_tesouro_direto(self, response):
         ativos_tesouro =  response.xpath(
             '//tbody/tr'
@@ -36,5 +38,4 @@ class EasynvestSpider(scrapy.Spider):
             taxa_negociada = ativo.xpath('./td[6]/text()').extract_first()
             ir_iof_taxa = ativo.xpath('./td[7]/text()').extract_first()
             Valor = ativo.xpath('./td[8]/text()').extract_first()            
-            print(" %s, %s, %s, %s, %s, %s, %s, %s, "% (nome_ativo, nome_emissor, quantidade, investimento, vencimento, taxa_negociada, ir_iof_taxa, Valor))
-        
+            print(" %s, %s, %s, %s, %s, %s, %s, %s, "% (nome_ativo, nome_emissor, quantidade, investimento, vencimento, taxa_negociada, ir_iof_taxa, Valor))               
