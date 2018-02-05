@@ -9,9 +9,20 @@ pip install scrapy
 ```
 
 Depois é só clonar o repositório entrar no Banksraper e rodar o comando:
+
+###### Listar os ativos: 
 ```sh
-scrapy crawl easynvest -a ac_number=xxxxxx -a password=xxxxxxx
+scrapy crawl easynvest_ativos -a ac_number=xxxxxx -a password=xxxxxxx
 ```
+
+###### Listar o extrato do mes vigente: 
+```sh
+scrapy crawl easynvest_extrato -a ac_number=xxxxxx -a password=xxxxxxx
+```
+
+Caso não queira ver os logs adicione o parametro ``--nolog``
+
+
 
 #### Onde
 **ac_number** é o número da sua conta de acesso
