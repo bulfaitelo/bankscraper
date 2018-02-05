@@ -3,12 +3,14 @@
 A ideia inicial é criar uma ferramenta par afazer a raspagem dos dados de alguns bancos, inicialmente criarei para o Easynvest e posteriormente para o Santander, conforme for para outros. 
 
 ## Requerimentos Scrapy
-#### Install:
+### Install:
 ```sh
 pip install scrapy
 ```
 
 Depois é só clonar o repositório entrar no Banksraper e rodar o comando:
+
+### Easynvest
 
 ###### Listar os ativos: 
 ```sh
@@ -19,6 +21,10 @@ scrapy crawl easynvest_ativos -a ac_number=xxxxxx -a password=xxxxxxx
 ```sh
 scrapy crawl easynvest_extrato -a ac_number=xxxxxx -a password=xxxxxxx
 ```
+
+### Santander
+Em breve
+
 
 Caso não queira ver os logs adicione o parametro ``--nolog``
 
